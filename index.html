@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alternating Sentences</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #4A90E2, #50C878);
+      color: #fff;
+      animation: backgroundAnimation 15s infinite alternate;
+    }
+
+    @keyframes backgroundAnimation {
+      0% {
+        background: linear-gradient(135deg, #4A90E2, #50C878);
+      }
+      100% {
+        background: linear-gradient(135deg, #7B3FE4, #FFD700);
+      }
+    }
+
+    #text-container {
+      position: absolute;
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      height: 50px; /* Fixed height for smooth transitions */
+    }
+
+    p {
+      opacity: 0;
+      transition: opacity 1s ease-in-out; /* 1 second fade-in and fade-out */
+      position: absolute; /* Stack sentences on top of each other */
+    }
+
+    .visible {
+      opacity: 1;
+    }
+
+    button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 16px;
+      padding: 10px 20px;
+      background-color: #FFD700;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #FFC107;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      #text-container {
+        font-size: 20px; /* Smaller text for mobile */
+      }
+
+      button {
+        font-size: 14px;
+        padding: 8px 16px; /* Adjust button size for mobile */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="text-container">
+    <p id="sentence1">அருட்பெருஞ்ஜோதி அருட்பெருஞ்ஜோதி</p>
+    <p id="sentence2">தனிப்பெரும் கருணை அருட்பெருஞ்ஜோதி</p>
+  </div>
+  <button id="startButton">தொடங்கு</button>
+
+  <script>
+    const sentence1 = document.getElementById("sentence1");
+    const sentence2 = document.getElementById("sentence2");
+    const startButton = document.getElementById("startButton");
+
+    let activeSentence = 1; // Track the active sentence
+    let timer; // Store the interval ID
+
+    function firstIteration() {
+      // Show the first sentence
+      sentence1.classList.add("visible");
+      setTimeout(() => {
+        sentence1.classList.remove("visible"); // Fade out the first sentence
+        setTimeout(() => {
+          // Show the second sentence with the correct timing
+          sentence2.classList.add("visible");
+          setTimeout(() => {
+            sentence2.classList.remove("visible");
+            startAlternation(); // Begin alternation cycle
+          }, 4000); // 4-second display for the second sentence
+        }, 1000); // 1-second fade-out delay for the first sentence
+      }, 4000); // 4-second display for the first sentence
+    }
+
+    function startAlternation() {
+      timer = setInterval(() => {
+        if (activeSentence === 1) {
+          sentence1.classList.add("visible");
+          sentence2.classList.remove("visible");
+          activeSentence = 2;
+        } else {
+          sentence1.classList.remove("visible");
+          sentence2.classList.add("visible");
+          activeSentence = 1;
+        }
+      }, 6000); // 6-second cycle
+    }
+
+    startButton.addEventListener("click", () => {
+      startButton.classList.add("hidden"); // Hide the button after clicking
+      firstIteration(); // Handle the first iteration separately
+    });
+  </script>
+</body>
+</html>
